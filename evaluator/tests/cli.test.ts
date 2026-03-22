@@ -1,17 +1,17 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { mkdirSync, writeFileSync, rmSync, existsSync, readFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
-import type { RunConfig, RawResult, ScorecardRules, ScoredResult } from '../src/types.js';
-import {
-  readRunConfig,
-  readRawResults,
-  readScorecardRules,
-  writeScoredResult,
-  countPrompts,
-  readTimingMinutes,
-} from '../src/io.js';
-import { scoreRun, totalScore, MAX_TOTAL } from '../src/scoring.js';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { evaluateGate } from '../src/gate.js';
+import {
+  countPrompts,
+  readRawResults,
+  readRunConfig,
+  readScorecardRules,
+  readTimingMinutes,
+  writeScoredResult,
+} from '../src/io.js';
+import { MAX_TOTAL, scoreRun, totalScore } from '../src/scoring.js';
+import type { RawResult, RunConfig, ScorecardRules, ScoredResult } from '../src/types.js';
 
 const TEST_DIR = join(process.cwd(), 'test-cli-integration');
 
@@ -115,8 +115,8 @@ describe('CLI integration', () => {
   };
 
   it('evaluates PASS scenario correctly', () => {
+    // Arrange
     const configDir = setupTestRun('pass');
-
     const config = readRunConfig(configDir);
     const rawResults = readRawResults(configDir, config.paths.rawResults);
     const rules = readScorecardRules(configDir);
@@ -133,6 +133,7 @@ describe('CLI integration', () => {
       raw.timing.durationMinutes
     );
 
+    // Act
     const scores = scoreRun({ raw, rules, promptCount, durationMinutes });
     const total = totalScore(scores);
     const percentage = Math.round((total / MAX_TOTAL) * 100);
@@ -152,6 +153,7 @@ describe('CLI integration', () => {
 
     const outputPath = writeScoredResult(configDir, config.paths.scoredResults, scoredResult);
 
+    // Assert
     expect(gateResults.passed).toBe(true);
     expect(existsSync(outputPath)).toBe(true);
 
@@ -161,8 +163,8 @@ describe('CLI integration', () => {
   });
 
   it('evaluates FAIL scenario correctly', () => {
+    // Arrange
     const configDir = setupTestRun('fail');
-
     const config = readRunConfig(configDir);
     const rawResults = readRawResults(configDir, config.paths.rawResults);
     const rules = readScorecardRules(configDir);
@@ -179,6 +181,7 @@ describe('CLI integration', () => {
       raw.timing.durationMinutes
     );
 
+    // Act
     const scores = scoreRun({ raw, rules, promptCount, durationMinutes });
     const total = totalScore(scores);
     const percentage = Math.round((total / MAX_TOTAL) * 100);
@@ -198,6 +201,7 @@ describe('CLI integration', () => {
 
     const outputPath = writeScoredResult(configDir, config.paths.scoredResults, scoredResult);
 
+    // Assert
     expect(gateResults.passed).toBe(false);
     expect(existsSync(outputPath)).toBe(true);
 
@@ -207,12 +211,14 @@ describe('CLI integration', () => {
   });
 
   it('produces correct scores for PASS scenario', () => {
+    // Arrange
     const configDir = setupTestRun('pass');
     const config = readRunConfig(configDir);
     const rawResults = readRawResults(configDir, config.paths.rawResults);
     const rules = readScorecardRules(configDir);
     const raw = rawResults[0];
 
+    // Act
     const scores = scoreRun({
       raw,
       rules,
@@ -220,6 +226,7 @@ describe('CLI integration', () => {
       durationMinutes: 21,
     });
 
+    // Assert
     expect(scores.completionSuccess).toBe(4);
     expect(scores.buildAndTests).toBe(5);
     expect(scores.coverage).toBe(5);

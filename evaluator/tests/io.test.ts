@@ -1,15 +1,15 @@
-import { describe, it, expect, beforeEach, afterEach } from 'vitest';
-import { mkdirSync, writeFileSync, rmSync, existsSync } from 'node:fs';
+import { existsSync, mkdirSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import {
-  readRunConfig,
-  readRawResults,
-  readScorecardRules,
   countPrompts,
+  readRawResults,
+  readRunConfig,
+  readScorecardRules,
   readTimingMinutes,
   writeScoredResult,
 } from '../src/io.js';
-import type { RunConfig, RawResult, ScorecardRules, ScoredResult } from '../src/types.js';
+import type { RawResult, RunConfig, ScorecardRules, ScoredResult } from '../src/types.js';
 
 const TEST_DIR = join(process.cwd(), 'test-temp');
 
@@ -29,6 +29,7 @@ describe('io functions', () => {
 
   describe('readRunConfig', () => {
     it('reads valid run.config.json successfully', () => {
+      // Arrange
       const config: RunConfig = {
         runId: 'test-run',
         mode: 'prompt-only',
@@ -63,20 +64,27 @@ describe('io functions', () => {
           specFile: 'docs/spec.md',
         },
       };
-
       writeFileSync(join(TEST_DIR, 'run.config.json'), JSON.stringify(config));
+
+      // Act
       const result = readRunConfig(TEST_DIR);
 
+      // Assert
       expect(result).toEqual(config);
     });
 
     it('throws error when run.config.json is missing', () => {
+      // Arrange
+      // (TEST_DIR exists but has no run.config.json)
+
+      // Act & Assert
       expect(() => readRunConfig(TEST_DIR)).toThrow('Missing run.config.json at:');
     });
   });
 
   describe('readRawResults', () => {
     it('reads raw result JSON files successfully', () => {
+      // Arrange
       const rawDir = join(TEST_DIR, 'results', 'raw');
       mkdirSync(rawDir, { recursive: true });
 
@@ -88,25 +96,32 @@ describe('io functions', () => {
         architecture: { violations: 1 },
         timing: { durationMinutes: 21 },
       };
-
       writeFileSync(join(rawDir, 'iteration-01.json'), JSON.stringify(raw1));
 
+      // Act
       const results = readRawResults(TEST_DIR, 'results/raw');
 
+      // Assert
       expect(results).toHaveLength(1);
       expect(results[0]).toEqual(raw1);
     });
 
     it('throws error when raw results directory is missing', () => {
+      // Arrange
+      // (results/raw directory does not exist)
+
+      // Act & Assert
       expect(() => readRawResults(TEST_DIR, 'results/raw')).toThrow(
         'Missing raw results directory:'
       );
     });
 
     it('throws error when no JSON files found', () => {
+      // Arrange
       const rawDir = join(TEST_DIR, 'results', 'raw');
       mkdirSync(rawDir, { recursive: true });
 
+      // Act & Assert
       expect(() => readRawResults(TEST_DIR, 'results/raw')).toThrow(
         'No raw result JSON files found in:'
       );
@@ -115,6 +130,7 @@ describe('io functions', () => {
 
   describe('readScorecardRules', () => {
     it('reads scorecard rules successfully', () => {
+      // Arrange
       const configDir = join(TEST_DIR, 'config');
       mkdirSync(configDir, { recursive: true });
 
@@ -126,96 +142,127 @@ describe('io functions', () => {
         promptEfficiency: { type: 'inverse', maxScore: 5 },
         timeEfficiency: { type: 'inverse', maxScore: 5 },
       };
-
       writeFileSync(join(configDir, 'scorecard-rules.json'), JSON.stringify(rules));
 
+      // Act
       const result = readScorecardRules(configDir);
 
+      // Assert
       expect(result).toEqual(rules);
     });
 
     it('throws error when scorecard-rules.json is missing', () => {
+      // Arrange
       const configDir = join(TEST_DIR, 'config');
       mkdirSync(configDir, { recursive: true });
 
+      // Act & Assert
       expect(() => readScorecardRules(configDir)).toThrow('Missing scorecard-rules.json at:');
     });
   });
 
   describe('countPrompts', () => {
     it('counts prompts from jsonl files', () => {
+      // Arrange
       const promptsDir = join(TEST_DIR, 'results', 'prompts');
       mkdirSync(promptsDir, { recursive: true });
 
       const prompts = '{"prompt": "test1"}\n{"prompt": "test2"}\n{"prompt": "test3"}';
       writeFileSync(join(promptsDir, 'session.jsonl'), prompts);
 
+      // Act
       const count = countPrompts(TEST_DIR, 'results/prompts', 5);
 
+      // Assert
       expect(count).toBe(3);
     });
 
     it('returns maxPrompts when directory does not exist', () => {
-      const count = countPrompts(TEST_DIR, 'results/prompts', 5);
+      // Arrange
+      const maxPrompts = 5;
 
+      // Act
+      const count = countPrompts(TEST_DIR, 'results/prompts', maxPrompts);
+
+      // Assert
       expect(count).toBe(5);
     });
 
     it('returns maxPrompts when no jsonl files found', () => {
+      // Arrange
       const promptsDir = join(TEST_DIR, 'results', 'prompts');
       mkdirSync(promptsDir, { recursive: true });
+      const maxPrompts = 5;
 
-      const count = countPrompts(TEST_DIR, 'results/prompts', 5);
+      // Act
+      const count = countPrompts(TEST_DIR, 'results/prompts', maxPrompts);
 
+      // Assert
       expect(count).toBe(5);
     });
 
     it('ignores empty lines in jsonl files', () => {
+      // Arrange
       const promptsDir = join(TEST_DIR, 'results', 'prompts');
       mkdirSync(promptsDir, { recursive: true });
 
       const prompts = '{"prompt": "test1"}\n\n{"prompt": "test2"}\n  \n{"prompt": "test3"}\n';
       writeFileSync(join(promptsDir, 'session.jsonl'), prompts);
 
+      // Act
       const count = countPrompts(TEST_DIR, 'results/prompts', 5);
 
+      // Assert
       expect(count).toBe(3);
     });
   });
 
   describe('readTimingMinutes', () => {
     it('reads timing from timing.json', () => {
+      // Arrange
       const logsDir = join(TEST_DIR, 'logs');
       mkdirSync(logsDir, { recursive: true });
 
       const timing = { durationMinutes: 25 };
       writeFileSync(join(logsDir, 'timing.json'), JSON.stringify(timing));
 
+      // Act
       const result = readTimingMinutes(TEST_DIR, 'logs/timing.json', 30);
 
+      // Assert
       expect(result).toBe(25);
     });
 
     it('returns fallback when timing file does not exist', () => {
-      const result = readTimingMinutes(TEST_DIR, 'logs/timing.json', 30);
+      // Arrange
+      const fallback = 30;
 
+      // Act
+      const result = readTimingMinutes(TEST_DIR, 'logs/timing.json', fallback);
+
+      // Assert
       expect(result).toBe(30);
     });
 
     it('returns fallback when durationMinutes is missing', () => {
+      // Arrange
       const logsDir = join(TEST_DIR, 'logs');
       mkdirSync(logsDir, { recursive: true });
 
       writeFileSync(join(logsDir, 'timing.json'), JSON.stringify({}));
+      const fallback = 30;
 
-      const result = readTimingMinutes(TEST_DIR, 'logs/timing.json', 30);
+      // Act
+      const result = readTimingMinutes(TEST_DIR, 'logs/timing.json', fallback);
 
+      // Assert
       expect(result).toBe(30);
     });
   });
 
   describe('writeScoredResult', () => {
     it('writes scored result and returns path', () => {
+      // Arrange
       const scoredResult: ScoredResult = {
         runId: 'test-run',
         mode: 'prompt-only',
@@ -237,13 +284,16 @@ describe('io functions', () => {
         },
       };
 
+      // Act
       const outputPath = writeScoredResult(TEST_DIR, 'results/scored', scoredResult);
 
+      // Assert
       expect(outputPath).toBe(join(TEST_DIR, 'results/scored/iteration-01.scored.json'));
       expect(existsSync(outputPath)).toBe(true);
     });
 
     it('creates directory if it does not exist', () => {
+      // Arrange
       const scoredResult: ScoredResult = {
         runId: 'test-run',
         mode: 'prompt-only',
@@ -264,12 +314,13 @@ describe('io functions', () => {
           checks: [],
         },
       };
-
       const scoredDir = join(TEST_DIR, 'results/scored');
       expect(existsSync(scoredDir)).toBe(false);
 
+      // Act
       writeScoredResult(TEST_DIR, 'results/scored', scoredResult);
 
+      // Assert
       expect(existsSync(scoredDir)).toBe(true);
     });
   });
