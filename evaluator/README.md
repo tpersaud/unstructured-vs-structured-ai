@@ -25,10 +25,16 @@ npm run test:watch    # Watch mode
 
 ## CLI Usage
 
-### Development mode (tsx)
+### Development mode (tsx) - PASS scenario
 
 ```bash
-npm run evaluate -- --run-dir ./fixtures --config-dir ./fixtures/config
+npm run evaluate -- --run-dir ./fixtures-sample-pass --config-dir ./fixtures-sample-pass/config
+```
+
+### Development mode (tsx) - FAIL scenario
+
+```bash
+npm run evaluate -- --run-dir ./fixtures-sample-fail --config-dir ./fixtures-sample-fail/config
 ```
 
 ### Production mode (compiled)
@@ -56,7 +62,8 @@ evaluator/
 ├── tests/
 │   ├── scoring.test.ts - Scoring unit tests
 │   └── gate.test.ts    - Gate logic tests
-├── fixtures/         - Self-contained test fixtures
+├── fixtures-sample-pass/  - Pipeline verification (PASS scenario)
+├── fixtures-sample-fail/  - Pipeline verification (FAIL scenario)
 └── package.json
 ```
 
@@ -69,11 +76,44 @@ evaluator/
 5. **promptEfficiency** - Prompt count efficiency
 6. **timeEfficiency** - Time duration efficiency
 
+## Purpose Field
+
+The `run.config.json` can include an optional `purpose` field:
+
+- `"purpose": "pipeline-verification"` — Sample-app verification runs (fixtures)
+- `"purpose": "experiment"` — Real experiment runs (templates)
+
+This field flows through to the scored output and CLI summary for clarity.
+
 ## Output
 
 - Scored JSON written to `results/scored/`
-- CLI table summary with scores and PASS/FAIL status
+- CLI summary with run info, scores, and PASS/FAIL status
 - Exit code: 0 for PASS, 1 for FAIL
+
+Example CLI output:
+
+```
+Run: sample-app-pass
+Purpose: pipeline-verification
+Mode: prompt-only
+
+Scores:
+  - Completion:        4
+  - Build & Tests:     5
+  - Coverage:          5
+  - Architecture:      4
+  - Prompt Efficiency: 5
+  - Time Efficiency:   3
+
+TOTAL: 26 / 30 (87%)
+
+  ✓ completionSuccess: 4 (min: 4)
+  ✓ buildAndTests: 5 (min: 4)
+  ✓ architecture: 4 (min: 4)
+
+STATUS: PASS
+```
 
 ## References
 

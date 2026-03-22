@@ -40,6 +40,7 @@ export interface RawResult {
 export interface ScoredResult {
   runId: string;
   mode: string;
+  purpose?: string;
   scores: {
     completionSuccess: number;
     buildAndTests: number;
@@ -60,6 +61,7 @@ export interface ScoredResult {
 export interface RunConfig {
   runId: string;
   mode: string;
+  purpose?: 'pipeline-verification' | 'experiment';
 
   models: {
     plan: string;

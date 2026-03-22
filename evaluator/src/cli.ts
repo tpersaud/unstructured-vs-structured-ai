@@ -1,8 +1,8 @@
-import minimist from 'minimist';
 import chalk from 'chalk';
-import { readRunConfig, readRawResults, readScorecardRules, countPrompts, readTimingMinutes, writeScoredResult } from './io.js';
-import { scoreRun, totalScore, MAX_TOTAL } from './scoring.js';
+import minimist from 'minimist';
 import { evaluateGate } from './gate.js';
+import { countPrompts, readRawResults, readRunConfig, readScorecardRules, readTimingMinutes, writeScoredResult } from './io.js';
+import { MAX_TOTAL, scoreRun, totalScore } from './scoring.js';
 import type { ScoredResult } from './types.js';
 
 function main(): void {
@@ -44,6 +44,7 @@ function main(): void {
   const scoredResult: ScoredResult = {
     runId: config.runId,
     mode: config.mode,
+    ...(config.purpose && { purpose: config.purpose }),
     scores,
     total,
     maxTotal: MAX_TOTAL,
@@ -58,6 +59,9 @@ function main(): void {
   // Print CLI summary
   console.log('');
   console.log(chalk.bold(`Run: ${config.runId}`));
+  if (config.purpose) {
+    console.log(`Purpose: ${config.purpose}`);
+  }
   console.log(`Mode: ${config.mode}`);
   console.log('');
   console.log(chalk.bold('Scores:'));

@@ -1,6 +1,7 @@
 {
-  "runId": "fixture-test-run",
+  "runId": "sample-app-pass",
   "mode": "prompt-only",
+  "purpose": "pipeline-verification",
   "scores": {
     "completionSuccess": 4,
     "buildAndTests": 5,

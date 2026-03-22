@@ -1,21 +1,21 @@
-# Evaluator Fixtures
+# Sample App Pass Fixture
 
-Self-contained test fixtures for evaluator unit tests and CLI smoke testing.
+Self-contained test fixture for evaluator CLI smoke testing with a passing scenario.
 
 ## Purpose
 
-Provides deterministic test data that allows the evaluator to run independently without external dependencies.
+Provides deterministic test data for verifying the evaluator pipeline with the sample-app (Docker verification harness). This is **pipeline verification**, not experiment data.
 
 ## Structure
 
 ```
-fixtures/
-├── run.config.json              - Fixture run configuration
+fixtures-sample-pass/
+├── run.config.json              - Fixture run configuration (runId: sample-app-pass, purpose: pipeline-verification)
 ├── config/
 │   └── scorecard-rules.json     - Copy of scoring rules
 ├── results/
 │   ├── raw/
-│   │   └── sample-raw.json      - Pre-computed raw input
+│   │   └── iteration-01.json    - Pre-computed raw input (PASS scenario)
 │   ├── scored/                  - Output directory for CLI
 │   └── prompts/
 │       └── sample.jsonl         - Sample prompt log (5 lines)
@@ -27,17 +27,26 @@ fixtures/
 
 ## Usage
 
-### In Unit Tests
-
-Tests use `expected/sample-scored.json` to verify scoring logic correctness.
-
-### In CLI Smoke Test
+### CLI Smoke Test (PASS scenario)
 
 ```bash
-npx tsx src/cli.ts --run-dir ./fixtures --config-dir ./fixtures/config
+npx tsx src/cli.ts --run-dir ./fixtures-sample-pass --config-dir ./fixtures-sample-pass/config
 ```
 
+Expected output:
+
+```
+Run: sample-app-pass
+Purpose: pipeline-verification
+Mode: prompt-only
+...
+STATUS: PASS
+```
+
+Exit code: 0
+
 This validates:
+
 - File I/O operations
 - Scoring calculations
 - Gate evaluation
@@ -46,12 +55,13 @@ This validates:
 
 ## Fixture Data
 
-**sample-raw.json** contains:
+**iteration-01.json** contains:
+
 - completionSuccess: 4/5 checks passed (80%)
 - buildAndTests: Both pass
 - coverage: 82% (above 80% threshold)
 - architecture: 1 violation
-- timing: 15 minutes
+- timing: 21 minutes
 - prompts: 5 prompts (at budget)
 
 **Expected scores:** All categories score 4-5, PASS gate succeeds.
