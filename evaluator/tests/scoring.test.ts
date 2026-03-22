@@ -1,14 +1,14 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
 import {
-  scoreCompletionSuccess,
-  scoreBuildAndTests,
-  scoreCoverage,
-  scoreArchitecture,
-  scorePromptEfficiency,
-  scoreTimeEfficiency,
-  scoreRun,
-  totalScore,
   MAX_TOTAL,
+  scoreArchitecture,
+  scoreBuildAndTests,
+  scoreCompletionSuccess,
+  scoreCoverage,
+  scorePromptEfficiency,
+  scoreRun,
+  scoreTimeEfficiency,
+  totalScore,
 } from '../src/scoring.js';
 import type { RawResult, ScorecardRules } from '../src/types.js';
 
@@ -212,5 +212,21 @@ describe('scoreRun (integration)', () => {
 
   it('MAX_TOTAL is 30', () => {
     expect(MAX_TOTAL).toBe(30);
+  });
+
+  it('uses default threshold when coverage.threshold is undefined', () => {
+    const raw = makeRaw({ coverage: { linePercent: 80 } });
+    const rulesWithoutThreshold: ScorecardRules = {
+      ...defaultRules,
+      coverage: { type: 'threshold', maxScore: 5 },
+    };
+    const scores = scoreRun({
+      raw,
+      rules: rulesWithoutThreshold,
+      promptCount: 5,
+      durationMinutes: 21,
+    });
+
+    expect(scores.coverage).toBe(5);
   });
 });

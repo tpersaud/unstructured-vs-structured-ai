@@ -1,7 +1,14 @@
 import chalk from 'chalk';
 import minimist from 'minimist';
 import { evaluateGate } from './gate.js';
-import { countPrompts, readRawResults, readRunConfig, readScorecardRules, readTimingMinutes, writeScoredResult } from './io.js';
+import {
+  countPrompts,
+  readRawResults,
+  readRunConfig,
+  readScorecardRules,
+  readTimingMinutes,
+  writeScoredResult,
+} from './io.js';
 import { MAX_TOTAL, scoreRun, totalScore } from './scoring.js';
 import type { ScoredResult } from './types.js';
 
@@ -11,8 +18,8 @@ function main(): void {
     default: { 'config-dir': './config' },
   });
 
-  const runDir = args['run-dir'];
-  const configDir = args['config-dir'];
+  const runDir = args['run-dir'] as string | undefined;
+  const configDir = args['config-dir'] as string;
 
   if (!runDir) {
     console.error(chalk.red('ERROR: --run-dir is required'));
@@ -30,7 +37,11 @@ function main(): void {
 
   // Gather supplementary signals
   const promptCount = countPrompts(runDir, config.paths.promptLogs, config.evaluation.maxPrompts);
-  const durationMinutes = readTimingMinutes(runDir, config.paths.timingFile, raw.timing.durationMinutes);
+  const durationMinutes = readTimingMinutes(
+    runDir,
+    config.paths.timingFile,
+    raw.timing.durationMinutes
+  );
 
   // Score
   const scores = scoreRun({ raw, rules, promptCount, durationMinutes });

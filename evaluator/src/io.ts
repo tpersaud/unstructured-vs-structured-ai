@@ -1,6 +1,6 @@
-import { readFileSync, writeFileSync, mkdirSync, existsSync, readdirSync } from 'node:fs';
-import { join, dirname } from 'node:path';
-import type { RunConfig, RawResult, ScorecardRules, ScoredResult } from './types.js';
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { join } from 'node:path';
+import type { RawResult, RunConfig, ScorecardRules, ScoredResult } from './types.js';
 
 export function readRunConfig(runDir: string): RunConfig {
   const configPath = join(runDir, 'run.config.json');
@@ -17,12 +17,12 @@ export function readRawResults(runDir: string, rawResultsPath: string): RawResul
     throw new Error(`Missing raw results directory: ${dir}`);
   }
 
-  const files = readdirSync(dir).filter((f) => f.endsWith('.json'));
+  const files = readdirSync(dir).filter((f: string) => f.endsWith('.json'));
   if (files.length === 0) {
     throw new Error(`No raw result JSON files found in: ${dir}`);
   }
 
-  return files.map((file) => {
+  return files.map((file: string) => {
     const content = readFileSync(join(dir, file), 'utf-8');
     return JSON.parse(content) as RawResult;
   });
@@ -40,11 +40,13 @@ export function readScorecardRules(configDir: string): ScorecardRules {
 export function countPrompts(runDir: string, promptLogsPath: string, maxPrompts: number): number {
   const dir = join(runDir, promptLogsPath);
   if (!existsSync(dir)) {
-    console.warn(`Prompt logs directory not found: ${dir}. Defaulting to maxPrompts (${maxPrompts}).`);
+    console.warn(
+      `Prompt logs directory not found: ${dir}. Defaulting to maxPrompts (${maxPrompts}).`
+    );
     return maxPrompts;
   }
 
-  const files = readdirSync(dir).filter((f) => f.endsWith('.jsonl'));
+  const files = readdirSync(dir).filter((f: string) => f.endsWith('.jsonl'));
   if (files.length === 0) {
     console.warn(`No .jsonl files found in: ${dir}. Defaulting to maxPrompts (${maxPrompts}).`);
     return maxPrompts;
@@ -53,14 +55,18 @@ export function countPrompts(runDir: string, promptLogsPath: string, maxPrompts:
   let count = 0;
   for (const file of files) {
     const content = readFileSync(join(dir, file), 'utf-8');
-    const lines = content.split('\n').filter((line) => line.trim().length > 0);
+    const lines = content.split('\n').filter((line: string) => line.trim().length > 0);
     count += lines.length;
   }
 
   return count;
 }
 
-export function readTimingMinutes(runDir: string, timingFilePath: string, fallback: number): number {
+export function readTimingMinutes(
+  runDir: string,
+  timingFilePath: string,
+  fallback: number
+): number {
   const timingPath = join(runDir, timingFilePath);
   if (!existsSync(timingPath)) {
     console.warn(`Timing file not found: ${timingPath}. Using raw fallback (${fallback} min).`);
@@ -72,7 +78,11 @@ export function readTimingMinutes(runDir: string, timingFilePath: string, fallba
   return data.durationMinutes ?? fallback;
 }
 
-export function writeScoredResult(runDir: string, scoredResultsPath: string, result: ScoredResult): string {
+export function writeScoredResult(
+  runDir: string,
+  scoredResultsPath: string,
+  result: ScoredResult
+): string {
   const dir = join(runDir, scoredResultsPath);
   if (!existsSync(dir)) {
     mkdirSync(dir, { recursive: true });
