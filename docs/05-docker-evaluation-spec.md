@@ -91,6 +91,19 @@ The container must:
 
 ---
 
+## Sample Application
+
+A minimal ASP.NET Core MVC application is included in `sample-app/` for verifying:
+
+- dotnet build
+- dotnet test
+- Docker execution pipeline
+
+This app is NOT part of the experiment runs.
+It is only used to validate the evaluation system.
+
+---
+
 ## Constraint
 
 - Lighthouse / E2E support should be pluggable later

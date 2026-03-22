@@ -20,6 +20,7 @@ Create the initial repository scaffold.
   - prompt-only/
   - lattice/
 - docker/
+- sample-app/ → minimal ASP.NET Core MVC app used for Docker pipeline verification
 - .github/workflows/
 
 ## Required Files
