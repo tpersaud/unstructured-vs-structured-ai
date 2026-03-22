@@ -1,0 +1,39 @@
+{
+  "runId": "lattice-run-XX",
+  "mode": "lattice",
+
+  "models": {
+    "plan": "claude-opus-4.6",
+    "ask": "claude-sonnet-4.5",
+    "code": "claude-sonnet-4.5",
+    "validate": "claude-sonnet-4.5",
+    "refactorMechanical": "claude-sonnet-4.5",
+    "refactorStructural": "claude-opus-4.6"
+  },
+
+  "paths": {
+    "appRoot": "app",
+    "solutionFile": "app/Holdem.sln",
+    "rawResults": "results/raw",
+    "scoredResults": "results/scored",
+    "promptLogs": "results/prompts",
+    "timingFile": "logs/timing.json"
+  },
+
+  "evaluation": {
+    "coverageThreshold": 80,
+    "maxPrompts": 5,
+    "scorecardRulesFile": "config/scorecard-rules.json"
+  },
+
+  "passGate": {
+    "completionSuccessMin": 4,
+    "buildAndTestsMin": 4,
+    "architectureMin": 4
+  },
+
+  "task": {
+    "name": "Texas Holdem MVC Web Application",
+    "specFile": "docs/02-task-spec.md"
+  }
+}
