@@ -1,0 +1,27 @@
+{
+  "completionSuccess": {
+    "type": "ratio",
+    "maxScore": 5
+  },
+  "buildAndTests": {
+    "type": "boolean",
+    "maxScore": 5
+  },
+  "coverage": {
+    "type": "threshold",
+    "threshold": 80,
+    "maxScore": 5
+  },
+  "architecture": {
+    "type": "penalty",
+    "maxScore": 5
+  },
+  "promptEfficiency": {
+    "type": "inverse",
+    "maxScore": 5
+  },
+  "timeEfficiency": {
+    "type": "inverse",
+    "maxScore": 5
+  }
+}

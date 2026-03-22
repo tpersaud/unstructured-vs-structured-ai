@@ -1,0 +1,22 @@
+{
+  "scenario": "fail",
+  "completion": {
+    "acceptanceChecksPassed": 2,
+    "acceptanceChecksTotal": 5
+  },
+  "build": {
+    "passed": true
+  },
+  "tests": {
+    "overallPassed": false
+  },
+  "coverage": {
+    "linePercent": 35
+  },
+  "architecture": {
+    "violations": 5
+  },
+  "timing": {
+    "durationMinutes": 50
+  }
+}

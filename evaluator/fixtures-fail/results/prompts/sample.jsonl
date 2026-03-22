@@ -1,0 +1,7 @@
+{"prompt": "Plan", "model": "claude-opus-4.6", "phase": "plan"}
+{"prompt": "Ask", "model": "claude-sonnet-4.5", "phase": "ask"}
+{"prompt": "Code", "model": "claude-sonnet-4.5", "phase": "code"}
+{"prompt": "Validate", "model": "claude-sonnet-4.5", "phase": "validate"}
+{"prompt": "Refactor", "model": "claude-sonnet-4.5", "phase": "refactor"}
+{"prompt": "Fix", "model": "claude-sonnet-4.5", "phase": "refactor"}
+{"prompt": "Fix again", "model": "claude-sonnet-4.5", "phase": "refactor"}

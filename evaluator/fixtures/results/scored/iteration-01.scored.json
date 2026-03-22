@@ -1,0 +1,39 @@
+{
+  "runId": "fixture-test-run",
+  "mode": "prompt-only",
+  "scores": {
+    "completionSuccess": 4,
+    "buildAndTests": 5,
+    "coverage": 5,
+    "architecture": 4,
+    "promptEfficiency": 5,
+    "timeEfficiency": 3
+  },
+  "total": 26,
+  "maxTotal": 30,
+  "percentage": 87,
+  "passed": true,
+  "gateResults": {
+    "passed": true,
+    "checks": [
+      {
+        "category": "completionSuccess",
+        "score": 4,
+        "minimum": 4,
+        "passed": true
+      },
+      {
+        "category": "buildAndTests",
+        "score": 5,
+        "minimum": 4,
+        "passed": true
+      },
+      {
+        "category": "architecture",
+        "score": 4,
+        "minimum": 4,
+        "passed": true
+      }
+    ]
+  }
+}

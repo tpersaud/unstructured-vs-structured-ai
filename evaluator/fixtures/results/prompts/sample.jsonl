@@ -1,0 +1,5 @@
+{"prompt": "Plan the architecture", "model": "claude-opus-4.6", "phase": "plan"}
+{"prompt": "Ask about data model", "model": "claude-sonnet-4.5", "phase": "ask"}
+{"prompt": "Implement game logic", "model": "claude-sonnet-4.5", "phase": "code"}
+{"prompt": "Validate and fix tests", "model": "claude-sonnet-4.5", "phase": "validate"}
+{"prompt": "Refactor service layer", "model": "claude-sonnet-4.5", "phase": "refactor"}
