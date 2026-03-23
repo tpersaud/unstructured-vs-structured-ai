@@ -32,7 +32,7 @@ describe('io functions', () => {
       // Arrange
       const config: RunConfig = {
         runId: 'test-run',
-        mode: 'prompt-only',
+        mode: 'unstructured-context',
         models: {
           plan: 'claude-opus-4.6',
           ask: 'claude-sonnet-4.5',
@@ -265,7 +265,7 @@ describe('io functions', () => {
       // Arrange
       const scoredResult: ScoredResult = {
         runId: 'test-run',
-        mode: 'prompt-only',
+        mode: 'unstructured-context',
         scores: {
           completionSuccess: 4,
           buildAndTests: 5,
@@ -296,7 +296,7 @@ describe('io functions', () => {
       // Arrange
       const scoredResult: ScoredResult = {
         runId: 'test-run',
-        mode: 'prompt-only',
+        mode: 'unstructured-context',
         scores: {
           completionSuccess: 4,
           buildAndTests: 5,

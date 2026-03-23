@@ -39,7 +39,7 @@ describe('Feature: CLI Evaluation Workflow', () => {
       // Given a valid run configuration for a passing scenario
       const config: RunConfig = {
         runId: 'e2e-pass-test',
-        mode: 'prompt-only',
+        mode: 'unstructured-context',
         purpose: 'pipeline-verification',
         models: {
           plan: 'claude-opus-4.6',
@@ -169,7 +169,7 @@ describe('Feature: CLI Evaluation Workflow', () => {
       // Given a valid run configuration for a failing scenario
       const config: RunConfig = {
         runId: 'e2e-fail-test',
-        mode: 'lattice',
+        mode: 'structured-context',
         purpose: 'experiment',
         models: {
           plan: 'claude-opus-4.6',
@@ -291,7 +291,7 @@ describe('Feature: CLI Evaluation Workflow', () => {
       expect(savedResult.runId).toBe('e2e-fail-test');
       expect(savedResult.purpose).toBe('experiment');
       expect(savedResult.passed).toBe(false);
-      expect(savedResult.mode).toBe('lattice');
+      expect(savedResult.mode).toBe('structured-context');
     });
   });
 
@@ -322,7 +322,7 @@ describe('Feature: CLI Evaluation Workflow', () => {
       // Given a config without raw results
       const config: RunConfig = {
         runId: 'test',
-        mode: 'prompt-only',
+        mode: 'unstructured-context',
         models: {
           plan: 'claude-opus-4.6',
           ask: 'claude-sonnet-4.5',
@@ -397,7 +397,7 @@ describe('Feature: Purpose Field Validation', () => {
       // Given a config with purpose set to pipeline-verification
       const config: RunConfig = {
         runId: 'pipeline-test',
-        mode: 'prompt-only',
+        mode: 'unstructured-context',
         purpose: 'pipeline-verification',
         models: {
           plan: 'claude-opus-4.6',
@@ -464,7 +464,7 @@ describe('Feature: Purpose Field Validation', () => {
       // Given a config with purpose set to experiment
       const config: RunConfig = {
         runId: 'experiment-test',
-        mode: 'lattice',
+        mode: 'structured-context',
         purpose: 'experiment',
         models: {
           plan: 'claude-opus-4.6',
@@ -531,7 +531,7 @@ describe('Feature: Purpose Field Validation', () => {
       // Given a config without purpose field
       const config: RunConfig = {
         runId: 'no-purpose-test',
-        mode: 'prompt-only',
+        mode: 'unstructured-context',
         models: {
           plan: 'claude-opus-4.6',
           ask: 'claude-sonnet-4.5',
@@ -612,7 +612,7 @@ describe('Feature: Complete Evaluation Pipeline', () => {
       // Given complete test data
       const config: RunConfig = {
         runId: 'full-pipeline-test',
-        mode: 'prompt-only',
+        mode: 'unstructured-context',
         purpose: 'pipeline-verification',
         models: {
           plan: 'claude-opus-4.6',

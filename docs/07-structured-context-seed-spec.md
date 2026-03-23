@@ -1,12 +1,12 @@
-# Lattice Seed Spec
+# Structured Context Seed Spec
 
 ## Goal
 
-Define structured context artifacts.
+Define structured context artifacts for the run-package seed.
 
 ## Structure
 
-lattice/
+run-package/structured-context/
 
 - rules/
 - workflows/
@@ -36,5 +36,5 @@ Define behavior for:
 
 ## Constraint
 
-Lattice must not introduce hidden automation.
+Structured context must not introduce hidden automation.
 It is the structure being tested.

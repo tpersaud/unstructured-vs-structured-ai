@@ -2,17 +2,17 @@
 
 ## Objective
 
-Evaluate whether structured context (lattice) improves AI-assisted development efficiency compared to prompt-only approaches under a strict 5-prompt budget.
+Evaluate whether structured context improves AI-assisted development efficiency compared to unstructured context approaches under a strict 5-prompt budget.
 
 ## Experiment Arms
 
-### Prompt-only (Unstructured)
+### Unstructured Context
 
 - All context lives inside prompts
 - No persistent structure
 - Behavior is recreated each interaction
 
-### Lattice (Structured Context)
+### Structured Context
 
 - Context externalized into reusable artifacts:
   - rules
@@ -67,10 +67,10 @@ A run passes when:
 
 Counterbalanced pairs:
 
-- Run 1: prompt-only
-- Run 2: lattice
-- Run 3: lattice
-- Run 4: prompt-only
+- Run 1: unstructured-context
+- Run 2: structured-context
+- Run 3: structured-context
+- Run 4: unstructured-context
 
 ## Key Insight
 

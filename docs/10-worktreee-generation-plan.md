@@ -6,7 +6,7 @@ Tonight:
 
 - create repo docs
 - build evaluator
-- build scripts/config/docker/lattice seeds
+- build scripts/config/docker/structured-context seeds
 - stabilize main
 
 Next:

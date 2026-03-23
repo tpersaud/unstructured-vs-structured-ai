@@ -1,6 +1,6 @@
 {
   "runId": "sample-app-fail",
-  "mode": "prompt-only",
+  "mode": "unstructured-context",
   "purpose": "pipeline-verification",
   "models": {
     "plan": "claude-opus-4.6",

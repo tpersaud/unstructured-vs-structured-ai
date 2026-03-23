@@ -32,7 +32,7 @@ describe('CLI integration', () => {
   const setupTestRun = (scenario: 'pass' | 'fail'): string => {
     const config: RunConfig = {
       runId: 'cli-test-run',
-      mode: 'prompt-only',
+      mode: 'unstructured-context',
       purpose: 'pipeline-verification',
       models: {
         plan: 'claude-opus-4.6',

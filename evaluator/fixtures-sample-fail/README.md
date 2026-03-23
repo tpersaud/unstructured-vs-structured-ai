@@ -35,7 +35,7 @@ Expected output:
 ```
 Run: sample-app-fail
 Purpose: pipeline-verification
-Mode: prompt-only
+Mode: unstructured-context
 ...
 ✗ completionSuccess: 2 (min: 4)
 ✗ architecture: 1 (min: 4)

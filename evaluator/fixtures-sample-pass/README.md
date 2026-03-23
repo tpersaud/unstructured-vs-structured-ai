@@ -38,7 +38,7 @@ Expected output:
 ```
 Run: sample-app-pass
 Purpose: pipeline-verification
-Mode: prompt-only
+Mode: unstructured-context
 ...
 STATUS: PASS
 ```

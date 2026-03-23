@@ -2,7 +2,7 @@
 
 Max 5 prompts per run.
 
-## Prompt-only
+## Unstructured Context
 
 ### 1 Plan
 
@@ -26,10 +26,10 @@ Fix issues or clean up.
 
 ---
 
-## Lattice
+## Structured Context
 
 Same steps, but:
 
-- must use lattice artifacts
+- must use structured-context artifacts
 - must follow rules/workflows
-- must align with structured context
+- must align with structured context seed

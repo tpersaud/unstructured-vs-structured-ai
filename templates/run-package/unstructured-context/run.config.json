@@ -1,6 +1,6 @@
 {
-  "runId": "lattice-run-XX",
-  "mode": "lattice",
+  "runId": "run-XX",
+  "mode": "unstructured-context",
   "purpose": "experiment",
   "models": {
     "plan": "claude-opus-4.6",

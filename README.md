@@ -20,21 +20,21 @@ This repository is a controlled experiment designed to answer that question.
 
 We compare two approaches to AI-assisted development:
 
-## 1. Prompt-Only (Unstructured)
+## 1. Unstructured Context
 
-* All context lives inside prompts
-* No persistent structure
-* Behavior is redefined every interaction
+- All context lives inside prompts
+- No persistent structure
+- Behavior is redefined every interaction
 
-## 2. Lattice (Structured Context)
+## 2. Structured Context
 
-* Context is externalized into reusable artifacts:
+- Context is externalized into reusable artifacts:
+  - rules
+  - workflows
+  - skills
+  - triggers
 
-  * rules
-  * workflows
-  * skills
-  * triggers
-* The system enforces structure across interactions
+- The system enforces structure across interactions
 
 ---
 
@@ -42,16 +42,16 @@ We compare two approaches to AI-assisted development:
 
 Both approaches use:
 
-* Same task
-* Same models (Claude only)
-* Same development loop
-* Same evaluation system
-* Same prompt budget
+- Same task
+- Same models (Claude only)
+- Same development loop
+- Same evaluation system
+- Same prompt budget
 
 The **only difference** is:
 
 ```text
-Implicit context (prompts) vs Explicit context (lattice)
+Unstructured context (prompts) vs Structured context (run-package)
 ```
 
 ---
@@ -96,11 +96,11 @@ Texas Hold’em ASP.NET Core MVC / Razor Pages application
 
 With:
 
-* game flow
-* dealing logic
-* hand evaluation
-* simplified betting
-* testable architecture
+- game flow
+- dealing logic
+- hand evaluation
+- simplified betting
+- testable architecture
 
 ---
 
@@ -108,10 +108,10 @@ With:
 
 A run passes when:
 
-* Completion ≥ 4
-* Build & Tests ≥ 4
-* Architecture ≥ 4
-* Core gameplay flow works without crashing
+- Completion ≥ 4
+- Build & Tests ≥ 4
+- Architecture ≥ 4
+- Core gameplay flow works without crashing
 
 ---
 
@@ -122,8 +122,8 @@ docs/         → experiment design and specs
 config/       → scoring rules
 evaluator/    → deterministic scoring engine
 scripts/      → evaluation + utility scripts
-templates/    → run templates
-experiments/  → individual kata runs
+templates/    → run-package templates (per mode)
+experiments/  → individual kata runs (unstructured-context / structured-context)
 docker/       → evaluation environment
 ```
 
@@ -133,12 +133,12 @@ docker/       → evaluation environment
 
 All runs are evaluated using a **deterministic evaluator**:
 
-* build validation
-* test execution
-* coverage checks
-* architecture checks
-* prompt efficiency
-* time efficiency
+- build validation
+- test execution
+- coverage checks
+- architecture checks
+- prompt efficiency
+- time efficiency
 
 Evaluation is run inside Docker for consistency.
 
@@ -162,9 +162,9 @@ The same AI system
 
 # 📊 What This Measures
 
-* Can structured context reach higher quality with fewer prompts?
-* Does structure reduce iteration cost?
-* Does it produce more stable outcomes?
+- Can structured context reach higher quality with fewer prompts?
+- Does structure reduce iteration cost?
+- Does it produce more stable outcomes?
 
 ---
 
@@ -178,9 +178,9 @@ Private (in active development)
 
 Planned:
 
-* full experiment execution
-* result analysis
-* public release
+- full experiment execution
+- result analysis
+- public release
 
 ---
 

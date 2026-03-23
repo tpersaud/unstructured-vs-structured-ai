@@ -6,8 +6,8 @@ set -euo pipefail
 #
 # Usage:
 #   ./scripts/new-run.sh <mode> <run-number>
-#   ./scripts/new-run.sh prompt-only 01
-#   ./scripts/new-run.sh lattice 02
+#   ./scripts/new-run.sh unstructured-context 01
+#   ./scripts/new-run.sh structured-context 02
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
@@ -18,17 +18,17 @@ RUN_NUMBER="${2:-}"
 if [[ -z "$MODE" || -z "$RUN_NUMBER" ]]; then
   echo "ERROR: mode and run number are required"
   echo "Usage: $0 <mode> <run-number>"
-  echo "  mode: prompt-only | lattice"
+  echo "  mode: unstructured-context | structured-context"
   echo "  run-number: 01, 02, etc."
   exit 1
 fi
 
-if [[ "$MODE" != "prompt-only" && "$MODE" != "lattice" ]]; then
-  echo "ERROR: Invalid mode. Must be 'prompt-only' or 'lattice'. Got: '$MODE'"
+if [[ "$MODE" != "unstructured-context" && "$MODE" != "structured-context" ]]; then
+  echo "ERROR: Invalid mode. Must be 'unstructured-context' or 'structured-context'. Got: '$MODE'"
   exit 1
 fi
 
-TEMPLATE_DIR="$REPO_ROOT/templates/$MODE"
+TEMPLATE_DIR="$REPO_ROOT/templates/run-package/$MODE"
 TARGET_DIR="$REPO_ROOT/experiments/$MODE/run-$RUN_NUMBER"
 
 if [[ ! -d "$TEMPLATE_DIR" ]]; then
@@ -53,11 +53,11 @@ import json
 config_path = '$TARGET_DIR/run.config.json'
 with open(config_path) as f:
     config = json.load(f)
-config['runId'] = '$MODE-run-$RUN_NUMBER'
+config['runId'] = 'run-$RUN_NUMBER'
 with open(config_path, 'w') as f:
     json.dump(config, f, indent=2)
 "
-  echo "Updated runId to: $MODE-run-$RUN_NUMBER"
+  echo "Updated runId to: run-$RUN_NUMBER"
 fi
 
 echo ""

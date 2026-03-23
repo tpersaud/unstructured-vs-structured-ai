@@ -1,6 +1,6 @@
 {
-  "runId": "prompt-only-run-XX",
-  "mode": "prompt-only",
+  "runId": "run-XX",
+  "mode": "structured-context",
   "purpose": "experiment",
   "models": {
     "plan": "claude-opus-4.6",

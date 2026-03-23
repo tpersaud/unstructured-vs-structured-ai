@@ -9,12 +9,14 @@ Bash orchestration scripts for evaluation pipeline and run management.
 Main evaluation orchestration script.
 
 **Usage:**
+
 ```bash
 SCENARIO=pass ./scripts/evaluate-run.sh /path/to/run
 SCENARIO=fail ./scripts/evaluate-run.sh /path/to/run
 ```
 
 **What it does:**
+
 1. Validates SCENARIO environment variable (must be `pass` or `fail`)
 2. Runs `dotnet build` on the application
 3. Runs `dotnet test` on the application
@@ -24,6 +26,7 @@ SCENARIO=fail ./scripts/evaluate-run.sh /path/to/run
 7. Exits with evaluator's exit code
 
 **SCENARIO modes:**
+
 - `pass` - Uses `raw-pass-template.json` (all gates pass, exit 0)
 - `fail` - Uses `raw-fail-template.json` (gates fail, exit 1)
 
@@ -32,26 +35,30 @@ SCENARIO=fail ./scripts/evaluate-run.sh /path/to/run
 Creates a new run directory from a template.
 
 **Usage:**
+
 ```bash
 ./scripts/new-run.sh <mode> <run-number>
 ```
 
 **Example:**
+
 ```bash
-./scripts/new-run.sh prompt-only 01
-./scripts/new-run.sh lattice 02
+./scripts/new-run.sh unstructured-context 01
+./scripts/new-run.sh structured-context 02
 ```
 
 **What it does:**
-1. Copies template from `templates/<mode>/` to `experiments/<mode>/<mode>-run-<number>/`
-2. Updates `runId` in `run.config.json`
-3. Creates empty result directories
+
+1. Copies template from `templates/run-package/<mode>/` to `experiments/<mode>/run-<number>/`
+2. Sets `runId` to `run-<number>` in `run.config.json`
+3. Preserves full stamped skeleton including `app/`, `run-package/`, `results/raw/`, `results/scored/`
 
 ### `raw-pass-template.json`
 
 Deterministic raw result that meets all pass gate thresholds.
 
 **Scores:**
+
 - completionSuccess: 4/5 (80%)
 - buildAndTests: Both pass
 - coverage: 82%
@@ -66,6 +73,7 @@ Deterministic raw result that meets all pass gate thresholds.
 Deterministic raw result that violates pass gate thresholds.
 
 **Scores:**
+
 - completionSuccess: 2/5 (40%) - **FAILS gate**
 - buildAndTests: Both pass
 - coverage: 65% - Below threshold
@@ -78,6 +86,7 @@ Deterministic raw result that violates pass gate thresholds.
 ## Purpose
 
 These scripts provide:
+
 - Controlled evaluation scenarios for testing
 - Consistent run directory creation
 - Docker pipeline verification

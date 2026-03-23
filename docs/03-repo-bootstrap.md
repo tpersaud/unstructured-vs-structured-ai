@@ -14,11 +14,13 @@ Create the initial repository scaffold.
   - tests/
   - fixtures/
 - templates/
-  - prompt-only/
-  - lattice/
+  - run-package/
+    - base/
+    - unstructured-context/
+    - structured-context/
 - experiments/
-  - prompt-only/
-  - lattice/
+  - unstructured-context/
+  - structured-context/
 - docker/
 - sample-app/ → minimal ASP.NET Core MVC app used for Docker pipeline verification
 - .github/workflows/

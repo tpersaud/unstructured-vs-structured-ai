@@ -96,7 +96,7 @@ Example CLI output:
 ```
 Run: sample-app-pass
 Purpose: pipeline-verification
-Mode: prompt-only
+Mode: unstructured-context
 
 Scores:
   - Completion:        4

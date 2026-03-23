@@ -6,7 +6,7 @@ import type { RunConfig } from '../src/types.js';
 function makeConfig(overrides: Partial<RunConfig['passGate']> = {}): RunConfig {
   return {
     runId: 'test-run',
-    mode: 'prompt-only',
+    mode: 'unstructured-context',
     models: {
       plan: 'claude-opus-4.6',
       ask: 'claude-sonnet-4.5',

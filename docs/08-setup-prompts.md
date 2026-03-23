@@ -16,6 +16,6 @@ Build evaluator from docs/04-evaluator-spec.md.
 
 Build Docker harness from docs/05-docker-evaluation-spec.md.
 
-## Prompt 5 — Lattice
+## Prompt 5 — Structured Context
 
-Create lattice artifacts from docs/07-lattice-seed-spec.md.
+Create structured context artifacts from docs/07-structured-context-seed-spec.md.
