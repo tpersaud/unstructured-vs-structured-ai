@@ -173,14 +173,13 @@ The same AI system
 This repository is currently:
 
 ```text
-Private (in active development)
+Public (in active development)
 ```
 
 Planned:
 
 - full experiment execution
 - result analysis
-- public release
 
 ---
 
