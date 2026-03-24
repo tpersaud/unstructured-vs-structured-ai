@@ -2,11 +2,14 @@
 set -euo pipefail
 
 # evaluate-run.sh
-# Orchestration script: dotnet build/test + select raw JSON by SCENARIO + invoke evaluator CLI
+# Orchestration script: dotnet build/test + invoke evaluator CLI
 #
 # Usage:
-#   SCENARIO=pass ./scripts/evaluate-run.sh <run-dir>
-#   SCENARIO=fail ./scripts/evaluate-run.sh <run-dir>
+#   ./scripts/evaluate-run.sh <run-dir>
+#
+# If results/raw/ already contains .json files, the evaluator runs on those directly.
+# If results/raw/ is empty, set SCENARIO=pass|fail to inject a fixture template.
+# SCENARIO is only needed for pipeline verification, not real experiment runs.
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
@@ -16,7 +19,7 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 RUN_DIR="${1:-}"
 if [[ -z "$RUN_DIR" ]]; then
   echo "ERROR: run directory argument is required"
-  echo "Usage: SCENARIO=pass|fail $0 <run-dir>"
+  echo "Usage: $0 <run-dir>"
   exit 1
 fi
 
@@ -25,18 +28,10 @@ if [[ ! -d "$RUN_DIR" ]]; then
   exit 1
 fi
 
-# --- Validate SCENARIO ---
-
-SCENARIO="${SCENARIO:-pass}"
-
-if [[ "$SCENARIO" != "pass" && "$SCENARIO" != "fail" ]]; then
-  echo "ERROR: Invalid SCENARIO. Must be 'pass' or 'fail'. Got: '$SCENARIO'"
-  exit 1
-fi
+SCENARIO="${SCENARIO:-}"
 
 echo "========================================"
-echo "Running evaluation scenario: $SCENARIO"
-echo "Run directory: $RUN_DIR"
+echo "Evaluating run: $RUN_DIR"
 echo "========================================"
 
 # --- Read run.config.json ---
@@ -66,27 +61,44 @@ else
   echo "No solution file found at $RUN_DIR/$SOLUTION_FILE — skipping dotnet build/test"
 fi
 
-# --- Select and copy raw JSON template ---
-
-echo ""
-echo "--- Generating raw results (scenario: $SCENARIO) ---"
+# --- Ensure raw results exist ---
 
 RAW_RESULTS_DIR="$RUN_DIR/results/raw"
 mkdir -p "$RAW_RESULTS_DIR"
 
-if [[ "$SCENARIO" == "pass" ]]; then
-  TEMPLATE="$SCRIPT_DIR/raw-pass-template.json"
-elif [[ "$SCENARIO" == "fail" ]]; then
-  TEMPLATE="$SCRIPT_DIR/raw-fail-template.json"
-fi
+RAW_COUNT=$(find "$RAW_RESULTS_DIR" -maxdepth 1 -name '*.json' 2>/dev/null | wc -l | tr -d ' ')
 
-if [[ ! -f "$TEMPLATE" ]]; then
-  echo "ERROR: Template not found: $TEMPLATE"
+if [[ "$RAW_COUNT" -gt 0 ]]; then
+  echo ""
+  echo "--- Found $RAW_COUNT raw result(s) in $RAW_RESULTS_DIR ---"
+elif [[ -n "$SCENARIO" ]]; then
+  echo ""
+  echo "--- No raw results found. Injecting fixture template (scenario: $SCENARIO) ---"
+
+  if [[ "$SCENARIO" != "pass" && "$SCENARIO" != "fail" ]]; then
+    echo "ERROR: Invalid SCENARIO. Must be 'pass' or 'fail'. Got: '$SCENARIO'"
+    exit 1
+  fi
+
+  if [[ "$SCENARIO" == "pass" ]]; then
+    TEMPLATE="$SCRIPT_DIR/raw-pass-template.json"
+  else
+    TEMPLATE="$SCRIPT_DIR/raw-fail-template.json"
+  fi
+
+  if [[ ! -f "$TEMPLATE" ]]; then
+    echo "ERROR: Template not found: $TEMPLATE"
+    exit 1
+  fi
+
+  cp "$TEMPLATE" "$RAW_RESULTS_DIR/iteration-01.json"
+  echo "Copied $TEMPLATE -> $RAW_RESULTS_DIR/iteration-01.json"
+else
+  echo ""
+  echo "ERROR: No raw results found in $RAW_RESULTS_DIR"
+  echo "Either produce real results (dotnet build/test) or set SCENARIO=pass|fail for fixture testing."
   exit 1
 fi
-
-cp "$TEMPLATE" "$RAW_RESULTS_DIR/iteration-01.json"
-echo "Copied $TEMPLATE -> $RAW_RESULTS_DIR/iteration-01.json"
 
 # --- Invoke evaluator CLI ---
 

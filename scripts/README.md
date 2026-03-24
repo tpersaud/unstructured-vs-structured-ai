@@ -11,21 +11,25 @@ Main evaluation orchestration script.
 **Usage:**
 
 ```bash
+# Real experiment run (auto-detects raw results)
+./scripts/evaluate-run.sh experiments/structured-context/run-01
+
+# Pipeline verification (injects fixture template)
 SCENARIO=pass ./scripts/evaluate-run.sh /path/to/run
 SCENARIO=fail ./scripts/evaluate-run.sh /path/to/run
 ```
 
 **What it does:**
 
-1. Validates SCENARIO environment variable (must be `pass` or `fail`)
-2. Runs `dotnet build` on the application
-3. Runs `dotnet test` on the application
-4. Selects appropriate raw template based on SCENARIO
-5. Copies raw template to `results/raw/iteration-01.json`
-6. Invokes evaluator CLI
-7. Exits with evaluator's exit code
+1. Runs `dotnet build` + `dotnet test` on the application (if solution file exists)
+2. Checks `results/raw/` for existing `.json` files
+   - If found → evaluates them directly (real experiment mode)
+   - If empty and `SCENARIO` is set → injects fixture template (pipeline verification mode)
+   - If empty and no `SCENARIO` → errors with clear message
+3. Invokes evaluator CLI
+4. Exits with evaluator's exit code
 
-**SCENARIO modes:**
+**SCENARIO** (optional, for pipeline verification only):
 
 - `pass` - Uses `raw-pass-template.json` (all gates pass, exit 0)
 - `fail` - Uses `raw-fail-template.json` (gates fail, exit 1)
