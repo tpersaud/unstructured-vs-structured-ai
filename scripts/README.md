@@ -15,8 +15,8 @@ Main evaluation orchestration script.
 ./scripts/evaluate-run.sh experiments/structured-context/run-01
 
 # Pipeline verification (injects fixture template)
-SCENARIO=pass ./scripts/evaluate-run.sh /path/to/run
-SCENARIO=fail ./scripts/evaluate-run.sh /path/to/run
+./scripts/evaluate-run.sh evaluator/fixtures-sample-pass pass
+./scripts/evaluate-run.sh evaluator/fixtures-sample-fail fail
 ```
 
 **What it does:**

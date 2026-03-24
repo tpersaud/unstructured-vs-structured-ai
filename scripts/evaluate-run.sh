@@ -5,10 +5,11 @@ set -euo pipefail
 # Orchestration script: dotnet build/test + invoke evaluator CLI
 #
 # Usage:
-#   ./scripts/evaluate-run.sh <run-dir>
+#   ./scripts/evaluate-run.sh <run-dir> [pass|fail]
 #
 # If results/raw/ already contains .json files, the evaluator runs on those directly.
-# If results/raw/ is empty, set SCENARIO=pass|fail to inject a fixture template.
+# If results/raw/ is empty, pass a scenario (pass|fail) to inject a fixture template.
+# The scenario can be a second argument or the SCENARIO env var.
 # SCENARIO is only needed for pipeline verification, not real experiment runs.
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -19,7 +20,7 @@ REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 RUN_DIR="${1:-}"
 if [[ -z "$RUN_DIR" ]]; then
   echo "ERROR: run directory argument is required"
-  echo "Usage: $0 <run-dir>"
+  echo "Usage: $0 <run-dir> [pass|fail]"
   exit 1
 fi
 
@@ -28,7 +29,7 @@ if [[ ! -d "$RUN_DIR" ]]; then
   exit 1
 fi
 
-SCENARIO="${SCENARIO:-}"
+SCENARIO="${2:-${SCENARIO:-}}"
 
 echo "========================================"
 echo "Evaluating run: $RUN_DIR"
